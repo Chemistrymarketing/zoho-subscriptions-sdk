@@ -26,5 +26,14 @@
       "ZohoSubscriptionTests\\": "tests/"
     }
   },
+  "scripts": {
+    "test": [
+      "./vendor/bin/phpunit"
+    ],
+    "coverage": [
+      "./vendor/bin/phpunit --coverage-html ./.coverage",
+      "@php -S localhost:3033 -t ./.coverage"
+    ]
+  },
   "license": "MIT"
 }
