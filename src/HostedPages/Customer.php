@@ -5,7 +5,6 @@ class Customer
 {
     protected $attributes = [];
 
-
     public function setName(string $firstName, string $lastName, string $salutation = null)
     {
         $this->attributes['first_name'] = $firstName;
@@ -51,7 +50,7 @@ class Customer
         $this->attributes['billing_address'] = $address->toArray();
     }
 
-    public function addCustomField($label, $value, $dataType = 'text')
+    public function addCustomField(string $label, string $value, string $dataType = 'text')
     {
         if (! array_key_exists('custom_fields', $this->attributes)) {
             $this->attributes['custom_fields'] = [];
