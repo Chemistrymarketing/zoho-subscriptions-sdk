@@ -4,7 +4,7 @@ namespace ZohoSubscription\HostedPages;
 
 class Subscription
 {
-    public function toArray():array
+    public function toArray(): array
     {
         return [];
     }
