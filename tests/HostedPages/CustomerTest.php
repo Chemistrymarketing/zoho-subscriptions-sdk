@@ -12,10 +12,10 @@ class CustomerTest extends TestCase
     /** @test */
     public function itCanCreateACustomerEntity()
     {
+        // given
         $address = new Address();
         $address->setRegion('UK', 'Wearside', 'SR1 1AA');
         $address->setLocale('1 High Street', 'Sunderland', 'Jim');
-        $customer = new Customer();
         $firstName = 'Jim';
         $lastName = 'Jones';
         $salutation = 'Mr.';
@@ -25,6 +25,9 @@ class CustomerTest extends TestCase
         $displayName = 'J-Dawg';
         $countryCode = 'GB';
         $vatNumber = '1908347562';
+
+        // when
+        $customer = new Customer();
         $customer->setName($firstName, $lastName, $salutation);
         $customer->setEmail($email);
         $customer->setCompanyName($companyName);
@@ -34,6 +37,7 @@ class CustomerTest extends TestCase
         $customer->setBillingAddress($address);
         $customer->setShippingAddress($address);
 
+        // then
         $this->assertEquals([
             'first_name' => $firstName,
             'last_name' => $lastName,
@@ -53,9 +57,13 @@ class CustomerTest extends TestCase
     /** @test */
     public function itCanCreateACustomerEntityWithACustomField()
     {
+        // given
         $customer = new Customer();
 
+        // when
         $customer->addCustomField('boom', 'bang', 'orange');
+
+        // then
         $this->assertEquals([
             'custom_fields' => [
                 [
@@ -68,10 +76,14 @@ class CustomerTest extends TestCase
     }    /** @test */
     public function itCanCreateACustomerEntityWithCustomFields()
     {
+        // given
         $customer = new Customer();
 
+        // when
         $customer->addCustomField('boom', 'bang', 'orange');
         $customer->addCustomField('roof', 'high', 'height');
+
+        // then
         $this->assertEquals([
             'custom_fields' => [
                 [

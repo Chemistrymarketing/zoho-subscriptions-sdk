@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\Stream;
 use GuzzleHttp\Psr7\StreamWrapper;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use ZohoSubscription\HostedPages\Subscription;
 
 class Client
 {
@@ -51,10 +52,14 @@ class Client
      */
     public function createCustomer(HostedPages\Customer $customer): string
     {
-        $response = $this->sendRequest('POST', 'https://subscriptions.zoho.com/api/v1/customers', [
-            'body' => json_encode($customer->toArray()),
-        ]);
+        $response = $this->sendRequest('POST', 'https://subscriptions.zoho.com/api/v1/customers', $customer->toArray());
         return json_decode($response->getBody())->customer->customer_id;
+    }
+
+    public function createSubscription(Subscription $subscription): string
+    {
+        $response = $this->sendRequest('POST', 'https://subscriptions.zoho.com/api/v1/hostedpages/newsubscription', $subscription->toArray());
+        return json_decode($response->getBody())->hostedpage->url;
     }
 
     private function sendRequest($method, $uri, $options): ResponseInterface
@@ -62,7 +67,7 @@ class Client
         return $this->httpClient->send(new Request($method, $uri, $options), [
             'Authorization' => 'Zoho-authtoken ' . $this->authenticationToken,
             'X-com-zoho-subscriptions-organizationid' => $this->organisationId,
-            'Content-type' => 'application/json;charset=UTF-8'
+            'Content-type' => 'application/json;charset=UTF-8',
         ]);
     }
 }

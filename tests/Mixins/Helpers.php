@@ -5,11 +5,13 @@ namespace ZohoSubscriptionTests\Mixins;
 use ZohoSubscription\Client;
 use ZohoSubscription\HostedPages\Address;
 use ZohoSubscription\HostedPages\Customer;
+use ZohoSubscription\HostedPages\Subscription;
 use ZohoSubscriptionTests\Fixtures\HttpClient;
 
 trait Helpers
 {
     private $httpClient;
+
     /**
      * @return Client
      */
@@ -19,6 +21,7 @@ trait Helpers
         $client = new Client($this->httpClient, '100100100', '$$tkn:10196==');
         return $client;
     }
+
     /**
      * @return Customer
      */
@@ -39,8 +42,25 @@ trait Helpers
         return $customer;
     }
 
+    protected function iHaveASubscription(): Subscription
+    {
+        return new Subscription('c-1234', 'plan-code');
+    }
+
     protected function getHttpClient(): HttpClient
     {
         return $this->httpClient;
+    }
+
+    protected function assertRequestIsOnlyMadeOnce()
+    {
+        $this->assertEquals(1, $this->getHttpClient()->callCount());
+        $this->assertCount(1, $this->getHttpClient()->getRequests());
+    }
+
+    protected function setResponse($response, $data)
+    {
+        $response = new $response($data);
+        $this->getHttpClient()->setResponse($response);
     }
 }

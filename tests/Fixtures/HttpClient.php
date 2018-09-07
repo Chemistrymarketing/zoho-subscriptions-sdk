@@ -6,6 +6,8 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
+use function GuzzleHttp\Psr7\stream_for;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
@@ -14,11 +16,12 @@ class HttpClient implements ClientInterface
 {
     private $calls = 0;
     private $requests = [];
+    /**
+     * @var ResponseMock
+     */
+    private $response;
     private $customerId;
-
-    public function setResponseCustomerId($id) {
-        $this->customerId = $id;
-    }
+    private $options;
 
     public function callCount(): int
     {
@@ -28,6 +31,11 @@ class HttpClient implements ClientInterface
     public function getRequests(): array
     {
         return $this->requests;
+    }
+
+    public function setResponse(ResponseMock $response)
+    {
+        $this->response = $response;
     }
 
     /**
@@ -45,14 +53,9 @@ class HttpClient implements ClientInterface
         $this->calls++;
         $body = json_decode($request->getBody());
         $body['customer_id'] = $this->customerId;
+        $this->options = $options;
         $this->requests[] = $request;
-        return new Response(201, [
-            'Content-Type' => 'application/json;charset=UTF-8',
-        ], json_encode([
-            'code' => 0,
-            'message' => 'The customer has been created',
-            'customer' => $body,
-        ]));
+        return $this->response;
     }
 
     /**
@@ -121,5 +124,13 @@ class HttpClient implements ClientInterface
     public function getConfig($option = null)
     {
         // TODO: Implement getConfig() method.
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 }
