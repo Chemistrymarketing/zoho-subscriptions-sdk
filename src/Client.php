@@ -33,6 +33,11 @@ class Client
         $this->authenticationToken = $authenticationToken;
     }
 
+    public static function build($id, $token)
+    {
+        return new static(new \GuzzleHttp\Client(), $id, $token);
+    }
+
     /**
      * @return string
      */
