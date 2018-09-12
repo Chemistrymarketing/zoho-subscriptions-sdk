@@ -13,12 +13,11 @@ $client = new ZohoClient::build($id, $token);
 
 ### Customers
 
-If you're creating a customer, most of the customer data is not technically required, so we have setter methods to add it when it is provided:
+If you're creating a customer, most of the customer data is not technically required (except the email address), so we have setter methods to add it when it is provided:
 
 ```php
-$customer = new Customer();
+$customer = new Customer($email);
 $customer->setName($firstName, $lastName, $salutation);
-$customer->setEmail($email);
 $customer->setCompanyName($companyName);
 $customer->setCurrencyCode($currencyCode);
 $customer->setDisplayName($displayName);
@@ -35,7 +34,7 @@ $customer->addCustomField('label 2', 'value', 'data type');
 Then when you're ready to save the customer, you send it to the method in the client, which returns the customer ID:
 
 ```php
-$id = $client->createCustomer($client);
+$id = $client->send($client)->getId();
 ```
 
 #### Customer Addresses
@@ -62,7 +61,7 @@ Creating a subscription is, at it's simplest, a case of creating a Subscription 
 ```php
 $subscription = new Subscription($customerId, $planId);
 
-$url = $client->createSubscription($subscription);
+$url = $client->send($subscription)->getId();
 ```
 
 This creates a hosted page, and returns the URL which your user needs to be redirected to in order to complete their subscription.
