@@ -1,6 +1,9 @@
 <?php
 
-namespace ZohoSubscription\HostedPages;
+namespace ZohoSubscription\Resources\Customers;
+
+use ZohoSubscription\Contracts\Requestable;
+use ZohoSubscription\Partials\HasRequestables;
 
 class Address implements Requestable
 {

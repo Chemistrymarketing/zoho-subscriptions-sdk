@@ -2,8 +2,8 @@
 
 namespace ZohoSubscriptionTests\HostedPages;
 
-use ZohoSubscription\HostedPages\Address;
-use ZohoSubscription\HostedPages\Customer;
+use ZohoSubscription\Resources\Customers\Address;
+use ZohoSubscription\Resources\Customers\Customer;
 use ZohoSubscriptionTests\Mixins\Helpers;
 use ZohoSubscriptionTests\TestCase;
 

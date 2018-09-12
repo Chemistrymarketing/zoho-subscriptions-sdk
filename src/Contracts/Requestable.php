@@ -1,6 +1,6 @@
 <?php
 
-namespace ZohoSubscription\HostedPages;
+namespace ZohoSubscription\Contracts;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

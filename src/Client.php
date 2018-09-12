@@ -3,13 +3,7 @@
 namespace ZohoSubscription;
 
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Psr7\Request;
-use function GuzzleHttp\Psr7\stream_for;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use ZohoSubscription\HostedPages\Customer;
-use ZohoSubscription\HostedPages\Requestable;
-use ZohoSubscription\HostedPages\Subscription;
+use ZohoSubscription\Contracts\Requestable;
 
 class Client
 {

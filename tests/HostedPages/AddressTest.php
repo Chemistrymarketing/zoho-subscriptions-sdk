@@ -2,7 +2,7 @@
 
 namespace ZohoSubscriptionTests\HostedPages;
 
-use ZohoSubscription\HostedPages\Address;
+use ZohoSubscription\Resources\Customers\Address;
 use ZohoSubscriptionTests\Mixins\Helpers;
 use ZohoSubscriptionTests\TestCase;
 

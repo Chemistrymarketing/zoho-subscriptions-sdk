@@ -2,12 +2,11 @@
 
 namespace ZohoSubscriptionTests\Mixins;
 
-use PHPUnit\Framework\Assert;
 use ZohoSubscription\Client;
-use ZohoSubscription\HostedPages\Address;
-use ZohoSubscription\HostedPages\Customer;
-use ZohoSubscription\HostedPages\Requestable;
-use ZohoSubscription\HostedPages\Subscription;
+use ZohoSubscription\Contracts\Requestable;
+use ZohoSubscription\Resources\Customers\Address;
+use ZohoSubscription\Resources\Customers\Customer;
+use ZohoSubscription\Resources\HostedPages\Subscription;
 use ZohoSubscriptionTests\Fixtures\HttpClient;
 
 trait Helpers

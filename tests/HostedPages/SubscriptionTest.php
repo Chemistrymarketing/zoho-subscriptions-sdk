@@ -2,7 +2,7 @@
 
 namespace ZohoSubscriptionTests\HostedPages;
 
-use ZohoSubscription\HostedPages\Subscription;
+use ZohoSubscription\Resources\HostedPages\Subscription;
 use ZohoSubscriptionTests\Mixins\Helpers;
 use ZohoSubscriptionTests\TestCase;
 

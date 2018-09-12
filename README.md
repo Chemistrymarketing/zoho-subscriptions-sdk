@@ -16,7 +16,7 @@ $client = new ZohoClient::build($id, $token);
 If you're creating a customer, most of the customer data is not technically required (except the email address), so we have setter methods to add it when it is provided:
 
 ```php
-$customer = new Customer($email);
+$customer = new \ZohoSubscription\Resources\Customers\Customer($email);
 $customer->setName($firstName, $lastName, $salutation);
 $customer->setCompanyName($companyName);
 $customer->setCurrencyCode($currencyCode);
@@ -42,7 +42,7 @@ $id = $client->send($client)->getId();
 adding an address to a customer requires you to create Address objects:
 
 ```php
-$address = new Address();
+$address = new  new \ZohoSubscription\Resources\Customers\Address();
 $address->setRegion($country, $state, $zip);
 $address->setLocale($street, $city, $attention);
 ```
@@ -59,7 +59,7 @@ $customer->setShippingAddress($address);
 Creating a subscription is, at it's simplest, a case of creating a Subscription entity and sending it to the client:
 
 ```php
-$subscription = new Subscription($customerId, $planId);
+$subscription = new  new \ZohoSubscription\Resources\HostedPages\Subscription($customerId, $planId);
 
 $url = $client->send($subscription)->getId();
 ```
@@ -70,4 +70,80 @@ You can optionally add a redirect url to the subscription before you send the re
 
 ```php
 $subscription->addRedirectUrl($redirectUrl);
+```
+
+## Regions
+
+Zoho Subscriptions are available in different regions, which have different URL's to access the API.
+
+To change to the EU region, you can use the `setApiRegionEU()` method on the `Client` class, and change it back with the `setApiRegionCOM()`
+
+```php
+$client = ZohoSubscription\Client::build();
+
+$client->setApiRegionEU();
+$client->setApiRegionCOM();
+
+$request = new ZohoSubscription\Resources\Customers\Customer('test@example.com');
+
+$client->send($request);
+```
+
+## Creating new API methods
+
+I have currently only created API classes for the functionality that is needed for the current project I am working on.
+If you need anything else, you can easily do so by implementing the `ZohoSubscription\Contracts\Requestable` interface and
+optionally using the `ZohoSubscription\Partials\HasRequestables` trait, for example this is a very basic Payment API implementation:
+
+
+```php 
+namespace MyCo\Zoho\Resources\Payments;
+
+use ZohoSubscription\Contracts\Requestable;
+use ZohoSubscription\Partials\HasRequestables;
+
+class Payment implements Requestable
+{
+    use HasRequestables;
+    
+    public function __construct(string $customerId, int $amount, string $paymentMode)
+    {
+        $this->attributes['customer_id'] = $customerId;
+        $this->attributes['amount'] = $amount;
+        $this->attributes['payment_mode'] = $paymentMode;
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function getUri(): string
+    {
+        return 'payments';
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function getId(): string
+    {
+        if (is_null($this->response)) {
+            throw new \Exception('Trying to get ID when request not sent yet');
+        }
+        return json_decode($this->response->getBody())->payment->payment_id;
+    }
+}
+
+
+```
+
+which you could build up and pass to the client's `send` method.
+
+```php
+
+$payment = new MyCo\Zoho\Resources\Payments($customerId, $amount, 'cash');
+
+$paymentId = $client->send($payment)->getId();
+
 ```

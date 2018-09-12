@@ -1,6 +1,6 @@
 <?php
 
-namespace ZohoSubscription\HostedPages;
+namespace ZohoSubscription\Partials;
 
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestInterface;

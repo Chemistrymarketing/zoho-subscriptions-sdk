@@ -1,6 +1,9 @@
 <?php
 
-namespace ZohoSubscription\HostedPages;
+namespace ZohoSubscription\Resources\HostedPages;
+
+use ZohoSubscription\Contracts\Requestable;
+use ZohoSubscription\Partials\HasRequestables;
 
 class Subscription implements Requestable
 {

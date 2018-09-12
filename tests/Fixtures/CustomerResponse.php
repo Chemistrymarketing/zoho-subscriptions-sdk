@@ -1,6 +1,7 @@
 <?php
 
 namespace ZohoSubscriptionTests\Fixtures;
+
 use Psr\Http\Message\ResponseInterface;
 
 class CustomerResponse extends Response implements ResponseMock, ResponseInterface
