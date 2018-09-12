@@ -21,4 +21,20 @@ class Subscription implements Requestable
         $this->attributes['redirect_url'] = $redirectUrl;
     }
 
+    public function getUri(): string
+    {
+        return 'hostedpages/newsubscription';
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function getId(): string
+    {
+        if (is_null($this->response)) {
+            throw new \Exception('Trying to get ID when request not sent yet');
+        }
+        return json_decode($this->response->getBody())->hostedpage->url;
+    }
 }

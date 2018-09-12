@@ -2,9 +2,14 @@
 
 namespace ZohoSubscription\HostedPages;
 
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+
 trait HasRequestables
 {
     private $attributes = [];
+    private $response;
 
 
     public function toArray(): array
@@ -16,4 +21,15 @@ trait HasRequestables
     {
         return json_encode($this->attributes);
     }
+
+    public function getRequest(): RequestInterface
+    {
+        return new Request('POST', $this->getUri(), [], $this->toJson());
+    }
+
+    public function setResponse(ResponseInterface $response)
+    {
+        $this->response = $response;
+    }
+
 }

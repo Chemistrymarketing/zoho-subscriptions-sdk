@@ -23,4 +23,22 @@ class Address implements Requestable
             $this->attributes['attention'] = $attention;
         }
     }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function getUri(): string
+    {
+        throw new \Exception('Request has no resource in Zoho');
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function getId(): string
+    {
+        throw new \Exception('Address can not have an ID');
+    }
 }

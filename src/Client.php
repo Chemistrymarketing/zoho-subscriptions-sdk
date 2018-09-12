@@ -7,6 +7,8 @@ use GuzzleHttp\Psr7\Request;
 use function GuzzleHttp\Psr7\stream_for;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use ZohoSubscription\HostedPages\Customer;
+use ZohoSubscription\HostedPages\Requestable;
 use ZohoSubscription\HostedPages\Subscription;
 
 class Client
@@ -70,25 +72,11 @@ class Client
         return $this->authenticationToken;
     }
 
-    /**
-     * @param HostedPages\Customer $customer
-     * @return string   Customer ID
-     */
-    public function createCustomer(HostedPages\Customer $customer): string
+    public function send(Requestable $requestable): Requestable
     {
-        $response = $this->sendRequest(new Request('POST', 'customers', [], $customer->toJson()));
-        return json_decode($response->getBody())->customer->customer_id;
-    }
-
-    public function createSubscription(Subscription $subscription): string
-    {
-        $response = $this->sendRequest(new Request('POST', 'hostedpages/newsubscription', [], $subscription->toJson()));
-        return json_decode($response->getBody())->hostedpage->url;
-    }
-
-    private function sendRequest(RequestInterface $request): ResponseInterface
-    {
-         return $this->httpClientInstance->send($request, ['debug' => true]);
+         $response = $this->httpClientInstance->send($requestable->getRequest());
+         $requestable->setResponse($response);
+         return $requestable;
     }
 
     public function setApiRegionEU()

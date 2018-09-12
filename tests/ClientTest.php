@@ -35,7 +35,7 @@ class ClientTest extends TestCase
     }
 
     /** @test */
-    public function itCanSendACreateCustomerRequest()
+    public function itCanCreateACustomer()
     {
         // given
         $client = $this->iHaveAClient();
@@ -44,15 +44,15 @@ class ClientTest extends TestCase
         $this->setResponse(CustomerResponse::class, $customerId);
 
         // when
-        $responseCustomerId = $client->createCustomer($customer);
+        $response = $client->send($customer);
 
         //then
         $this->assertRequestIsOnlyMadeOnce();
-        $this->assertEquals($customerId, $responseCustomerId);
+        $this->assertEquals($customerId, $response->getId());
     }
 
     /** @test */
-    public function itCanSendASubscriptionRequest()
+    public function itCanCreateASubscription()
     {
         // given
         $client = $this->iHaveAClient();
@@ -61,11 +61,11 @@ class ClientTest extends TestCase
         $this->setResponse(SubscriptionResponse::class, $url);
 
         // when
-        $responseUrl = $client->createSubscription($subscription);
+        $response = $client->send($subscription);
 
         // then
         $this->assertRequestIsOnlyMadeOnce();
-        $this->assertEquals($url, $responseUrl);
+        $this->assertEquals($url, $response->getId());
     }
     /** @test */
     public function itCanSetApiRegionToEU()
