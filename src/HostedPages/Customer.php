@@ -6,6 +6,11 @@ class Customer implements Requestable
 {
     use HasRequestables;
 
+    public function __construct(string $email)
+    {
+        $this->setEmail($email);
+    }
+
     public function setName(string $firstName, string $lastName, string $salutation = null)
     {
         $this->attributes['first_name'] = $firstName;

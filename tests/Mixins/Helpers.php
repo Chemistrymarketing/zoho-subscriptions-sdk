@@ -2,6 +2,7 @@
 
 namespace ZohoSubscriptionTests\Mixins;
 
+use PHPUnit\Framework\Assert;
 use ZohoSubscription\Client;
 use ZohoSubscription\HostedPages\Address;
 use ZohoSubscription\HostedPages\Customer;
@@ -31,9 +32,8 @@ trait Helpers
         $address = new Address();
         $address->setRegion('UK', 'Wearside', 'SR1 1AA');
         $address->setLocale('1 High Street', 'Sunderland', 'Jim');
-        $customer = new Customer();
+        $customer = new Customer('test@example.com');
         $customer->setName('Jim', 'Jones', 'Mr.');
-        $customer->setEmail('jim@jones.com');
         $customer->setCompanyName('Jim and his Joneses');
         $customer->setCurrencyCode('DGP');
         $customer->setDisplayName('J-Dawg');
@@ -67,7 +67,7 @@ trait Helpers
 
     protected function assertArrayAndJsonResponses(Requestable $item, array $response)
     {
-        $this->assertEquals($response, $item->toArray());
+        $this->assertArraySubset($response, $item->toArray());
         $this->assertJson(json_encode($response), $item->toJson());
     }
 }

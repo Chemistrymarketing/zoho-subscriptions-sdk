@@ -21,7 +21,7 @@ class CustomerTest extends TestCase
         $firstName = 'Jim';
         $lastName = 'Jones';
         $salutation = 'Mr.';
-        $email = 'jim@jones.com';
+        $email = 'test@example.com';
         $companyName = 'Jim and his Joneses';
         $currencyCode = 'GBP';
         $displayName = 'J-Dawg';
@@ -29,9 +29,8 @@ class CustomerTest extends TestCase
         $vatNumber = '1908347562';
 
         // when
-        $customer = new Customer();
+        $customer = new Customer($email);
         $customer->setName($firstName, $lastName, $salutation);
-        $customer->setEmail($email);
         $customer->setCompanyName($companyName);
         $customer->setCurrencyCode($currencyCode);
         $customer->setDisplayName($displayName);
@@ -60,7 +59,7 @@ class CustomerTest extends TestCase
     public function itCanCreateACustomerEntityWithACustomField()
     {
         // given
-        $customer = new Customer();
+        $customer = new Customer('test@example.com');
 
         // when
         $customer->addCustomField('boom', 'bang', 'orange');
@@ -80,7 +79,7 @@ class CustomerTest extends TestCase
     public function itCanCreateACustomerEntityWithCustomFields()
     {
         // given
-        $customer = new Customer();
+        $customer = new Customer('test@example.com');
 
         // when
         $customer->addCustomField('boom', 'bang', 'orange');
@@ -110,7 +109,7 @@ class CustomerTest extends TestCase
      */
     public function itThrowsAnExceptionWhenCallingGetIdBeforeRequestIsSent()
     {
-        $customer = new Customer();
+        $customer = new Customer('test@example.com');
         $customer->getId();
     }
 }
