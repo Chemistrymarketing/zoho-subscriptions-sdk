@@ -35,4 +35,26 @@ class AddressTest extends TestCase
             'zip'
         ));
     }
+
+    /**
+     * @test
+     * @expectedException \Exception
+     * @expectedExceptionMessage Address can not have an ID
+     */
+    public function itThrowsAnExceptionWhenITryToGetAnAddressesID()
+    {
+        $address = new Address();
+        $address->getId();
+    }
+
+    /**
+     * @test
+     * @expectedException \Exception
+     * @expectedExceptionMessage Request has no resource in Zoho
+     */
+    public function itThrowsAnExceptionWhenITryToGetAnAddressesURI()
+    {
+        $address = new Address();
+        $address->getUri();
+    }
 }

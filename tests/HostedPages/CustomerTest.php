@@ -102,4 +102,15 @@ class CustomerTest extends TestCase
             ],
         ]);
     }
+
+    /**
+     * @test
+     * @expectedException \Exception
+     * @expectedExceptionMessage Trying to get ID when request not sent yet
+     */
+    public function itThrowsAnExceptionWhenCallingGetIdBeforeRequestIsSent()
+    {
+        $customer = new Customer();
+        $customer->getId();
+    }
 }

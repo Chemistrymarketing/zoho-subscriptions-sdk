@@ -103,4 +103,12 @@ class ClientTest extends TestCase
         // then
         $this->assertEquals(Client::API_REGION_COM, $client->getHttpClientInstance()->getConfig('base_uri'));
     }
+
+    /** @test */
+    public function itCanBuildTheClient()
+    {
+        $client = Client::build('asdf', 'asdf');
+
+        $this->assertInstanceOf(\GuzzleHttp\Client::class, $client->getHttpClientInstance());
+    }
 }

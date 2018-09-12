@@ -59,19 +59,6 @@ class Client
         ]);
     }
 
-    /**
-     * @return string
-     */
-    public function getOrganisationId(): string
-    {
-        return $this->organisationId;
-    }
-
-    public function getAuthenticationToken(): string
-    {
-        return $this->authenticationToken;
-    }
-
     public function send(Requestable $requestable): Requestable
     {
          $response = $this->httpClientInstance->send($requestable->getRequest());

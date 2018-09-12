@@ -48,4 +48,15 @@ class SubscriptionTest extends TestCase
             'redirect_url' => $redirectUrl,
         ]);
     }
+
+    /**
+     * @test
+     * @expectedException \Exception
+     * @expectedExceptionMessage Trying to get ID when request not sent yet
+     */
+    public function itThrowsAnExceptionWhenCallingGetIdBeforeRequestIsSent()
+    {
+        $customer = new Subscription('asdf', 'asdf');
+        $customer->getId();
+    }
 }
