@@ -2,9 +2,10 @@
 
 namespace ZohoSubscription\HostedPages;
 
-class Subscription
+class Subscription implements Requestable
 {
-    private $attributes = [];
+    use HasRequestables;
+
     public function __construct($customerId, $planCode)
     {
         $this->attributes = [
@@ -20,8 +21,4 @@ class Subscription
         $this->attributes['redirect_url'] = $redirectUrl;
     }
 
-    public function toArray(): array
-    {
-        return $this->attributes;
-    }
 }

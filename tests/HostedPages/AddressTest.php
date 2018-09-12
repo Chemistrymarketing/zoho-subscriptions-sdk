@@ -3,10 +3,12 @@
 namespace ZohoSubscriptionTests\HostedPages;
 
 use ZohoSubscription\HostedPages\Address;
+use ZohoSubscriptionTests\Mixins\Helpers;
 use ZohoSubscriptionTests\TestCase;
 
 class AddressTest extends TestCase
 {
+    use Helpers;
     /** @test */
     public function itCanCreateAnAddressEntity()
     {
@@ -24,6 +26,13 @@ class AddressTest extends TestCase
         $address->setLocale($street, $city, $attention);
 
         // then
-        $this->assertEquals(compact('country', 'state', 'city', 'street', 'attention', 'zip'), $address->toArray());
+        $this->assertArrayAndJsonResponses($address, compact(
+            'country',
+            'state',
+            'city',
+            'street',
+            'attention',
+            'zip'
+        ));
     }
 }

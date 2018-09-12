@@ -5,6 +5,7 @@ namespace ZohoSubscriptionTests\Mixins;
 use ZohoSubscription\Client;
 use ZohoSubscription\HostedPages\Address;
 use ZohoSubscription\HostedPages\Customer;
+use ZohoSubscription\HostedPages\Requestable;
 use ZohoSubscription\HostedPages\Subscription;
 use ZohoSubscriptionTests\Fixtures\HttpClient;
 
@@ -17,8 +18,8 @@ trait Helpers
      */
     public function iHaveAClient(): Client
     {
-        $this->httpClient = new HttpClient();
-        $client = new Client($this->httpClient, '100100100', '$$tkn:10196==');
+        $client = new Client(HttpClient::class, '100100100', '$$tkn:10196==');
+        $this->httpClient = $client->getHttpClientInstance();
         return $client;
     }
 
@@ -62,5 +63,11 @@ trait Helpers
     {
         $response = new $response($data);
         $this->getHttpClient()->setResponse($response);
+    }
+
+    protected function assertArrayAndJsonResponses(Requestable $item, array $response)
+    {
+        $this->assertEquals($response, $item->toArray());
+        $this->assertJson(json_encode($response), $item->toJson());
     }
 }

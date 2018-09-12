@@ -1,10 +1,10 @@
 <?php
 
 namespace ZohoSubscription\HostedPages;
-class Address
-{
-    private $attributes = [];
 
+class Address implements Requestable
+{
+    use HasRequestables;
 
     public function setRegion(string $country, string $state, string $zipCode = null)
     {
@@ -22,10 +22,5 @@ class Address
         if (!is_null($attention)) {
             $this->attributes['attention'] = $attention;
         }
-    }
-
-    public function toArray(): array
-    {
-        return $this->attributes;
     }
 }

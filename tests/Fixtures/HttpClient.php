@@ -16,9 +16,7 @@ class HttpClient implements ClientInterface
 {
     private $calls = 0;
     private $requests = [];
-    /**
-     * @var ResponseMock
-     */
+    /** @var ResponseInterface */
     private $response;
     private $customerId;
     private $options;
@@ -33,9 +31,18 @@ class HttpClient implements ClientInterface
         return $this->requests;
     }
 
-    public function setResponse(ResponseMock $response)
+    public function setResponse(ResponseInterface $response)
     {
         $this->response = $response;
+    }
+
+    /**
+     * HttpClient constructor.
+     * @param $options
+     */
+    public function __construct($options = [])
+    {
+        $this->options = $options;
     }
 
     /**
@@ -51,9 +58,6 @@ class HttpClient implements ClientInterface
     public function send(RequestInterface $request, array $options = [])
     {
         $this->calls++;
-        $body = json_decode($request->getBody());
-        $body['customer_id'] = $this->customerId;
-        $this->options = $options;
         $this->requests[] = $request;
         return $this->response;
     }
@@ -123,14 +127,9 @@ class HttpClient implements ClientInterface
      */
     public function getConfig($option = null)
     {
-        // TODO: Implement getConfig() method.
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOptions()
-    {
+        if (!is_null($option)) {
+            return $this->options[$option];
+        }
         return $this->options;
     }
 }

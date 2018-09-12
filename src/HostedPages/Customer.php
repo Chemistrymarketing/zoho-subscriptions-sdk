@@ -1,9 +1,10 @@
 <?php
 
 namespace ZohoSubscription\HostedPages;
-class Customer
+
+class Customer implements Requestable
 {
-    protected $attributes = [];
+    use HasRequestables;
 
     public function setName(string $firstName, string $lastName, string $salutation = null)
     {
@@ -60,10 +61,5 @@ class Customer
             'value' => $value,
             'data_type' => $dataType,
         ];
-    }
-
-    public function toArray(): array
-    {
-        return $this->attributes;
     }
 }

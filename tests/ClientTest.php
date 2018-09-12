@@ -18,14 +18,20 @@ class ClientTest extends TestCase
         // given
         $organisationId = '100100100';
         $authenticationToken = '$$tkn:10196==';
-        $httpClient = new HttpClient();
 
         // when
-        $client = new Client($httpClient, $organisationId, $authenticationToken);
+        $client = new Client(HttpClient::class, $organisationId, $authenticationToken);
 
         // then
-        $this->assertEquals($organisationId, $client->getOrganisationId());
-        $this->assertEquals($authenticationToken, $client->getAuthenticationToken());
+        $this->assertInstanceOf(HttpClient::class, $client->getHttpClientInstance());
+        $this->assertArraySubset([
+            'base_uri' => Client::API_REGION_COM,
+            'headers' => [
+                'Authorization' => 'Zoho-authtoken ' . $authenticationToken,
+                'X-com-zoho-subscriptions-organizationid' => $organisationId,
+                'Content-type' => 'application/json;charset=UTF-8',
+            ],
+        ], $client->getHttpClientInstance()->getConfig());
     }
 
     /** @test */
@@ -60,5 +66,41 @@ class ClientTest extends TestCase
         // then
         $this->assertRequestIsOnlyMadeOnce();
         $this->assertEquals($url, $responseUrl);
+    }
+    /** @test */
+    public function itCanSetApiRegionToEU()
+    {
+        // given
+        $client = $this->iHaveAClient();
+        // when
+        $client->setApiRegionEU();
+        // then
+        $this->assertEquals(Client::API_REGION_EU, $client->getApiUrl());
+    }
+
+    /** @test */
+    public function itCanSetApiRegionToCOM()
+    {
+        // given
+        $client = $this->iHaveAClient();
+        // when
+        $client->setApiRegionCOM();
+        // then
+        $this->assertEquals(Client::API_REGION_COM, $client->getApiUrl());
+    }
+
+    /** @test */
+    public function whenChangingApiRegionItChangesBaseClientUrl()
+    {
+        // given
+        $client = $this->iHaveAClient();
+        // when
+        $client->setApiRegionEU();
+        // then
+        $this->assertEquals(Client::API_REGION_EU, $client->getHttpClientInstance()->getConfig('base_uri'));
+        // when
+        $client->setApiRegionCOM();
+        // then
+        $this->assertEquals(Client::API_REGION_COM, $client->getHttpClientInstance()->getConfig('base_uri'));
     }
 }

@@ -4,10 +4,12 @@ namespace ZohoSubscriptionTests\HostedPages;
 
 use ZohoSubscription\HostedPages\Address;
 use ZohoSubscription\HostedPages\Customer;
+use ZohoSubscriptionTests\Mixins\Helpers;
 use ZohoSubscriptionTests\TestCase;
 
 class CustomerTest extends TestCase
 {
+    use Helpers;
 
     /** @test */
     public function itCanCreateACustomerEntity()
@@ -38,7 +40,7 @@ class CustomerTest extends TestCase
         $customer->setShippingAddress($address);
 
         // then
-        $this->assertEquals([
+        $this->assertArrayAndJsonResponses($customer, [
             'first_name' => $firstName,
             'last_name' => $lastName,
             'salutation' => $salutation,
@@ -50,7 +52,7 @@ class CustomerTest extends TestCase
             'vat_reg_no' => $vatNumber,
             'shipping_address' => $address->toArray(),
             'billing_address' => $address->toArray(),
-        ], $customer->toArray());
+        ]);
     }
 
 
@@ -64,7 +66,7 @@ class CustomerTest extends TestCase
         $customer->addCustomField('boom', 'bang', 'orange');
 
         // then
-        $this->assertEquals([
+        $this->assertArrayAndJsonResponses($customer, [
             'custom_fields' => [
                 [
                     'label' => 'boom',
@@ -72,8 +74,9 @@ class CustomerTest extends TestCase
                     'data_type' => 'orange',
                 ],
             ],
-        ], $customer->toArray());
-    }    /** @test */
+        ]);
+    }
+    /** @test */
     public function itCanCreateACustomerEntityWithCustomFields()
     {
         // given
@@ -84,7 +87,7 @@ class CustomerTest extends TestCase
         $customer->addCustomField('roof', 'high', 'height');
 
         // then
-        $this->assertEquals([
+        $this->assertArrayAndJsonResponses($customer, [
             'custom_fields' => [
                 [
                     'label' => 'boom',
@@ -97,6 +100,6 @@ class CustomerTest extends TestCase
                     'data_type' => 'height',
                 ],
             ],
-        ], $customer->toArray());
+        ]);
     }
 }

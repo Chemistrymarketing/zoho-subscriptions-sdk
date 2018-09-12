@@ -3,10 +3,12 @@
 namespace ZohoSubscriptionTests\HostedPages;
 
 use ZohoSubscription\HostedPages\Subscription;
+use ZohoSubscriptionTests\Mixins\Helpers;
 use ZohoSubscriptionTests\TestCase;
 
 class SubscriptionTest extends TestCase
 {
+    use Helpers;
     /** @test */
     public function itCanCreateASubscriptionObject()
     {
@@ -18,12 +20,12 @@ class SubscriptionTest extends TestCase
         $subscription = new Subscription($customerId, $planId);
 
         // then
-        $this->assertEquals([
+        $this->assertArrayAndJsonResponses($subscription, [
             'customer_id' => $customerId,
             'plan' => [
                 'plan_code' => $planId,
             ],
-        ], $subscription->toArray());
+        ]);
     }
 
     /** @test */
@@ -38,12 +40,12 @@ class SubscriptionTest extends TestCase
         $subscription->addRedirectUrl($redirectUrl);
 
         // then
-        $this->assertEquals([
+        $this->assertArrayAndJsonResponses($subscription, [
             'customer_id' => $customerId,
             'plan' => [
                 'plan_code' => $planId,
             ],
             'redirect_url' => $redirectUrl,
-        ], $subscription->toArray());
+        ]);
     }
 }
